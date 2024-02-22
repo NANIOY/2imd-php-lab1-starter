@@ -22,7 +22,7 @@
 </head>
 <body>
     <?php // todo3 : lus over je checkins en print deze visueel af zoals op de screenshots/screenshot1.png?>
-
+test
     <?php // todo4 : zorg dat je header en footer opgehaald wordt vanuit footer.inc.php en header.inc.php zodat je deze kan hergebruiken op meerdere schermen?>
 </body>
 </html>
