@@ -1,28 +1,79 @@
 <?php
-    /*
-        todo1: maak een multidimensionale array met daarin alle checkins zoals te zien op screenshots/screenshot1.png
-            - denk na over welke data er in je array moet zitten
-            - soms voeg je een foto toe, soms niet (tip: gebruik voor je foto's pexels.com of een andere gratis leverancier)
-            - op screenshots/screenshot2.jpeg kan je zien wat bedoelt wordt met een checkin met foto
-            - werk met isset() of empty() om de foto soms wel en soms niet af te drukken
+class Post
+{
+    public $profile_image;
+    public $username;
+    public $additional_info;
+    public $location;
+    public $text;
+    public $distance;
 
+    public $image;
 
-        todo2: werk met een constant DISTANCE waarmee je kan instellen wat de maximale afstand is om checkins voor te tonen
-            - je zal in je array een extra stukje data moeten bijvoegen om deze afstand mee te betrekken in je checkins
+    public function __construct($profile_image, $username, $additional_info, $location, $text = null, $distance = null, $image = null) {
+        $this->profile_image = $profile_image;
+        $this->username = $username;
+        $this->additional_info = $additional_info;
+        $this->location = $location;
+        $this->text = $text;
+        $this->distance = $distance;
+        $this->image = $image;
+    }
+};
 
-    */
+$posts = [
+    new Post('https://via.placeholder.com/150', 'Jesse', 'Assembly 3.0', 'San Francisco CA', 'Le work.', 60),
+    new Post('https://via.placeholder.com/150', 'Michal', 'Voxer', 'San Francisco CA', null, 40, 'https://via.placeholder.com/150'),
+    new Post('https://via.placeholder.com/150', 'Petr', 'ROXY/NoD', 'Prague Czech Republic', null, 10),
+    new Post('https://via.placeholder.com/150', 'Jaroslav', 'Brno hlavní nádraží', 'Brno Czech Republic', null, 100),
+    new Post('https://via.placeholder.com/150', 'Jesse', 'The Mill', 'San Francisco CA', null, 80)
+];
 
-?><!DOCTYPE html>
+$maxDistance = 80; // change max distance here
+
+$filtered_posts = array_filter($posts, function ($post) use ($maxDistance) {
+    return $post->distance <= $maxDistance;
+});
+
+?>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Swarm App</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <?php // todo3 : lus over je checkins en print deze visueel af zoals op de screenshots/screenshot1.png?>
-test
-    <?php // todo4 : zorg dat je header en footer opgehaald wordt vanuit footer.inc.php en header.inc.php zodat je deze kan hergebruiken op meerdere schermen?>
+
+    <div class="container">
+        <?php include_once('header.inc.php') ?>
+        <div class="container__posts">
+            <?php
+            foreach ($filtered_posts as $post) {
+                echo '<div class="post">';
+                echo '<img src="' . $post->profile_image . '" class="post__image">';
+                echo '<div class="post__info">';
+                echo '<h2 class="post__info__username">' . $post->username . '</h2>';
+                echo '<p class="post__info__additionalInfo">' . $post->additional_info . '</p>';
+                echo '<p class="post__info__location">' . $post->location . '</p>';
+                echo '<p class="post__info__text">' . $post->text . '</p>';
+                if (isset($post->image) && !empty($post->image)) {
+                    echo '<img class="post__info__image" src="' . $post->image . '">';
+                }
+                echo '</div>';
+                echo '</div>';
+            }
+            ?>
+        </div>
+
+        <?php include_once('footer.inc.php') ?>
+    </div>
+
+
 </body>
+
 </html>
